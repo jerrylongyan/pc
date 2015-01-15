@@ -5,7 +5,11 @@ import cn.edu.hfut.dmic.webcollector.conf.ConfLoader;
 import cn.edu.hfut.dmic.webcollector.crawler.DeepCrawler;
 import cn.edu.hfut.dmic.webcollector.model.Links;
 import cn.edu.hfut.dmic.webcollector.model.Page;
+import cn.edu.hfut.dmic.webcollector.util.JDBCHelper;
 import cn.edu.hfut.dmic.webcollector.util.RegexRule;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.jdbc.core.JdbcTemplate;
 
 import java.util.HashMap;
 import java.util.regex.Pattern;
@@ -14,6 +18,7 @@ import java.util.regex.Pattern;
  * Created by leilongyan on 2015/1/14.
  */
 public class SinaKnowledgeCrawler extends DeepCrawler {
+    public static final Logger LOG = LoggerFactory.getLogger(SinaKnowledgeCrawler.class);
     //包括主题url正则和分页正则
     private RegexRule regexRule = new RegexRule();
     //<url的hashcode, 年龄段>
@@ -22,6 +27,7 @@ public class SinaKnowledgeCrawler extends DeepCrawler {
     //<url的hashcode, 类别>
     private HashMap<Integer,Integer> urlCategory = new HashMap<Integer, Integer>();
     private HashMap<String,Integer> partCategory = new HashMap<String, Integer>();
+    private JdbcTemplate jdbcTemplate = null;
 
     public SinaKnowledgeCrawler(String crawlPath) {
         super(crawlPath);
@@ -81,6 +87,15 @@ public class SinaKnowledgeCrawler extends DeepCrawler {
         partCategory.put("/wj3/",36);//玩具
         partCategory.put("/xxjy/",37);//学校教育
         partCategory.put("/yey/",38);//幼儿园
+
+        try {
+            jdbcTemplate = JDBCHelper.createMysqlTemplate("sinaknowledge",
+                    "jdbc:mysql://localhost/pro-baby?useUnicode=true&characterEncoding=utf8",
+                    "root", "1234", 5, 30);
+        } catch (Exception ex) {
+            jdbcTemplate = null;
+            LOG.error("mysql未开启或JDBCHelper.createMysqlTemplate中参数配置不正确!");
+        }
     }
 
     @Override
@@ -114,9 +129,19 @@ public class SinaKnowledgeCrawler extends DeepCrawler {
             return nextLinks;
         }
         else if(isMatchTheme(url)){//如果匹配主题
+            if (jdbcTemplate == null) {
+                LOG.error("jdbcTemplate is null");
+                return null;
+            }
             //主题抽取,插入数据库
             Integer age = urlAge.get(url.hashCode());
             Integer category = urlCategory.get(url.hashCode());
+            /*将数据插入mysql*/
+            int updates=jdbcTemplate.update("insert into t_knowledge (age_sectionid,author,categoryid,crawl_date,create_date,html_content,pv,title,url) value(?,?,?,?,?,?,?,?,?)",
+                    age, "", category, "date", "date", "html", 0, "title", url);
+            if(updates==1){
+                LOG.info("url:" + url + "解析并入库成功!");
+            }
         }
         return null;
     }
