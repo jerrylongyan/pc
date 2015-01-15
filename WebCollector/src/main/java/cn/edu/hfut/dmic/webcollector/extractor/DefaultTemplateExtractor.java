@@ -9,7 +9,7 @@ import java.util.regex.Pattern;
 /**
  * Created by leilongyan on 2015/1/15.
  */
-public class DefaultTemplateExtractor extends Extractor {
+public class DefaultTemplateExtractor implements Extractor {
     //抽取正则
     protected HashMap<String,String> templateReg;
     protected static final String TitleStr = "title";
@@ -47,16 +47,23 @@ public class DefaultTemplateExtractor extends Extractor {
         article.setUrl(page.getUrl());
 
         //匹配作者
-        article.setAuthor(extractField(AuthorStr, html));
+        article.setAuthor(extractField(AuthorStr, html,false));
         //时间抽取
+        article.setPublishDate(extractField(PublishDateStr,html,false));
+        //正文
+        article.setMainContext(extractField(MainContentStr,html,true));
+        //标题
+        article.setTitle(extractField(TitleStr,html,false));
 
-
-        return null;
+        return article;
     }
 
-    protected String extractField(String fieldStr, String html){
+    protected String extractField(String fieldStr, String html, boolean isNeedHtml){
         String field = null;
         String fieldRegStr = templateReg.get(fieldStr);
+        if(fieldRegStr == null || fieldRegStr.isEmpty()){
+            return field;
+        }
         String fieldReg = fieldRegStr;
         int fieldGroup = 0;
         if (fieldRegStr.contains(Seperator)) {
@@ -67,7 +74,11 @@ public class DefaultTemplateExtractor extends Extractor {
         Matcher m = p.matcher(html);
         if(m.find()){
             String fieldHtml = m.group(fieldGroup);
-            field = fieldHtml.replaceAll("<.*?>","").replaceAll("\\s*\n\\s*"," ").replaceAll("\\s*\r\\s*"," ").trim();
+            if(isNeedHtml) {
+                field = fieldHtml.replaceAll("\\s*\n\\s*", "\n").replaceAll("\\s*\r\\s*", "\n").trim();
+            }else{
+                field = fieldHtml.replaceAll("<.*?>", "").replaceAll("\\s*\n\\s*", " ").replaceAll("\\s*\r\\s*", " ").trim();
+            }
         }
         return field;
     }

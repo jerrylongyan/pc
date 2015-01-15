@@ -8,7 +8,9 @@ import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.Array;
 import java.net.URISyntaxException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -19,8 +21,8 @@ import java.util.List;
 public class ConfLoader implements ConfConstant {
     public static final Logger LOG = LoggerFactory.getLogger(ConfLoader.class);
     public static PropertiesConfiguration prop = null;
-    public static HashSet<String> seedsSet = new HashSet<String>();
-    public static HashSet<String> pagingRegexSet = new HashSet<String>();
+    public static ArrayList<String> seedsList = new ArrayList<String>();
+    public static ArrayList<String> pagingRegexList = new ArrayList<String>();
     public static HashMap<String,HashMap<String,String>> templatesMap = new HashMap<String, HashMap<String,String>>();
 
     static {
@@ -49,14 +51,14 @@ public class ConfLoader implements ConfConstant {
 
     public static void reloadConf(){
         String confPath = getProperty(CrawlName,"");
-        analyseConf(confPath + "/" + SeedFile, seedsSet);//种子
-        analyseConf(confPath + "/" + PagingRegexFile, pagingRegexSet);//分页
+        analyseConf(confPath + "/" + SeedFile, seedsList);//种子
+        analyseConf(confPath + "/" + PagingRegexFile, pagingRegexList);//分页
 
         //模板
         templatesMap.clear();
-        HashSet<String> templatesSet = new HashSet<String>();
-        templatesSet = analyseConf(confPath + "/" + TemplatesFile, templatesSet);//模板
-        for(String regexTps : templatesSet){
+        ArrayList<String> templatesList = new ArrayList<String>();
+        templatesList = analyseConf(confPath + "/" + TemplatesFile, templatesList);//模板
+        for(String regexTps : templatesList){
             String []tpsFiles = regexTps.split(ThemeTemplateSplit);
             if(tpsFiles.length <= 1){
                 continue;
@@ -82,7 +84,7 @@ public class ConfLoader implements ConfConstant {
         }
     }
 
-    public static HashSet<String> analyseConf(String filePath, HashSet<String> propSet){
+    public static ArrayList<String> analyseConf(String filePath, ArrayList<String> propSet){
         propSet.clear();
         try {
             File file = new File(ConfLoader.class.getClassLoader().getResource(filePath).toURI());
@@ -119,8 +121,8 @@ public class ConfLoader implements ConfConstant {
     }
 
     public static void main(String []args){
-        System.out.println(ConfLoader.seedsSet);
-        System.out.println(ConfLoader.pagingRegexSet);
+        System.out.println(ConfLoader.seedsList);
+        System.out.println(ConfLoader.pagingRegexList);
         System.out.println(ConfLoader.templatesMap);
         //System.out.println(ConfLoader.seedsSet);
     }

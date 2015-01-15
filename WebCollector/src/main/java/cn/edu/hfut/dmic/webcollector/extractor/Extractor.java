@@ -7,6 +7,6 @@ import java.util.HashMap;
 /**
  * Created by leilongyan on 2015/1/15.
  */
-public abstract class Extractor {
-    public abstract Object extractMainContent(Page page);
+public interface Extractor {
+    public Object extractMainContent(Page page);
 }

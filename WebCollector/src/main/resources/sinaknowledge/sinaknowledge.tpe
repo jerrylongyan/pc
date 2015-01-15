@@ -1,4 +1,4 @@
-title=(?is)(内容：)(</b>.*?</span>\s+<div class="quest_tree1">)%%%2
-publishDate=(?is)20\d{2}-\d{1,2}-\d{1,2}
-author=
-mainContent=(?is)(内容：)(</b>.*?</span>\s+<div class="quest_tree1">)%%%2
+title=(?is)<h1 id="artibodyTitle".*?>.*?</h1>
+publishDate=(?is)<span id="pub_date">.*?</span>
+author=(?is)<span id="media_name"><(span|a) class="ent1 fred".*?>.*?</span>
+mainContent=(?is)<div class="blkContainerSblkCon BSHARE_POP" id="artibody">.*?</p>.*?</div>

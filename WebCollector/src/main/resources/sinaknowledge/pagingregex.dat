@@ -1,5 +1,20 @@
 #####准备怀孕分页
 http://roll.baby.sina.com.cn/babynewslist/zbhy/default/(hqzb1|bylc|hyjj|ycys|snsn|byby|yyys|qt)/index_\d{1,2}.shtml
 
-#####怀孕期分页,没完
-http://roll.baby.sina.com.cn/babynewslist/hyq/default/(tefy|yyys|yqbj)/index_\d{1,2}.shtml
+#####怀孕期分页
+http://roll.baby.sina.com.cn/babynewslist/hyq/default/(tefy|yyys|yqbj|yqjc|yqxl|ssyf|cjjb|yqaq|tj2|dbt|qt)/index_\d{1,2}.shtml
+
+#####分娩期
+http://roll.baby.sina.com.cn/babynewslist/fmq/default/(scfs|lpdc|fmgc|yjbb|yyys|mrwy|chhf|chyyz|cjjb|aqbj|qt)/index_\d{1,2}.shtml
+
+#####新生儿
+http://roll.baby.sina.com.cn/babynewslist/xse/default/(cczb|mrwy|rgwy|hlbj|myjz|cjjb|qnkf|zce|qt)/index_\d{1,2}.shtml
+
+#####婴儿期
+http://roll.baby.sina.com.cn/babynewslist/yeq/default/(cczb|yyys|hlbj|myjz|cjjb|jtjy|qnkf|xlxwyy|qt)/index_\d{1,2}.shtml
+
+####幼儿期
+http://roll.baby.sina.com.cn/babynewslist/yeq1/default/(cczb|yyys|hlbj|cjjb|myjz|jtjy|qnkf|xlxwyy|yspy|yy4|yd1|wj3|qt)/index_\d{1,2}.shtml
+
+####学龄前
+http://roll.baby.sina.com.cn/babynewslist/xlq/default/(cczb|yyys|hlbj|cjjb|myjz|jtjy|qnkf|xlxwyy|xxjy|yspy|yey|yy4|yd1|wj3|qt)/index_\d{1,2}.shtml
