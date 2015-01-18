@@ -17,6 +17,7 @@ public class DefaultTemplateExtractor implements Extractor {
     protected static final String AuthorStr = "author";
     protected static final String MainContentStr = "mainContent";
     protected static final String Seperator = "%%%";
+    protected String filteredHtml = null;
 
     //html无用标签的过滤
     private final static String [][] filters = {
@@ -37,11 +38,13 @@ public class DefaultTemplateExtractor implements Extractor {
         if(null == page){
             return null;
         }
+        filteredHtml = null;
         String html = page.getHtml();
         //过滤样式，脚本等不相干标签
         for(String [] filter : filters){
             html = html.replaceAll(filter[0],filter[1]);
         }
+        filteredHtml = html;
 
         Article article = new Article();
         article.setUrl(page.getUrl());
