@@ -113,7 +113,10 @@ public class SinaKnowledgeCrawler extends DefaultCrawler {
     protected void extractAndSave(String matchedTheme,Page page){
         Extractor extractor = extractors.get(matchedTheme);
         if(extractor != null){
-            Article article = (Article)extractor.extractMainContent(page);
+            Object obj = extractor.extractMainContent(page);
+            if(null == obj)
+                return;
+            Article article = (Article)obj;
             if(article.getMainContext() == null || article.getMainContext().isEmpty()
                     || article.getTitle() == null || article.getTitle().isEmpty()){
                 return;

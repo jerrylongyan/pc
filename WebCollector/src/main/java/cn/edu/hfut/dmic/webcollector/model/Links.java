@@ -31,6 +31,9 @@ import org.jsoup.select.Elements;
 public class Links extends ArrayList<String> {
 
     public void addAllFromDocument(Document doc) {
+        if(null == doc){
+            return;
+        }
         Elements as = doc.select("a[href]");
         for (Element a : as) {
             String href = a.attr("abs:href");
@@ -39,6 +42,9 @@ public class Links extends ArrayList<String> {
     }
     
     public void addAllFromDocument(Document doc, String cssSelector) {
+        if(null == doc){
+            return;
+        }
         Elements as = doc.select(cssSelector).select("a[href]");
         for (Element a : as) {
             String href = a.attr("abs:href");
@@ -47,6 +53,9 @@ public class Links extends ArrayList<String> {
     }
     
     public void addAllFromDocument(Document doc, RegexRule regexRule) {
+        if(null == doc){
+            return;
+        }
         Elements as = doc.select("a[href]");
         for (Element a : as) {
             String href = a.attr("abs:href");
@@ -57,6 +66,9 @@ public class Links extends ArrayList<String> {
     }
     
     public void addAllFromDocument(Document doc, String cssSelector, RegexRule regexRule) {
+        if(null == doc){
+            return;
+        }
         Elements as = doc.select(cssSelector).select("a[href]");
         for (Element a : as) {
             String href = a.attr("abs:href");

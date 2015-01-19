@@ -85,6 +85,10 @@ public class Page{
             return null;
         }
         String charset=CharsetDetector.guessEncoding(getContent());
+        //longyan修改 charset不对则丢弃
+        if(charset == null || charset.isEmpty()) {
+            return null;
+        }
         try {
             this.html = new String(getContent(),charset);
             return html;

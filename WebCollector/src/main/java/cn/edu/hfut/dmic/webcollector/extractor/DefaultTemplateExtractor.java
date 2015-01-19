@@ -35,7 +35,7 @@ public class DefaultTemplateExtractor implements Extractor {
 
     @Override
     public Object extractMainContent(Page page) {
-        if(null == page){
+        if(null == page || page.getHtml() == null){
             return null;
         }
         filteredHtml = null;

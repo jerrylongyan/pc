@@ -37,9 +37,10 @@ public class CharsetDetector {
         detector.dataEnd();
         String encoding = detector.getDetectedCharset();
         detector.reset();
-        if (encoding == null) {
+        //longyan修改 编码检测失败则丢弃
+        /*if (encoding == null) {
             encoding = DEFAULT_ENCODING;
-        }
+        }*/
         return encoding;
     }
 }
