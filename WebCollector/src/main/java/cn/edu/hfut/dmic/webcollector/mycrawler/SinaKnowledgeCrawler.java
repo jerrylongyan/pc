@@ -3,10 +3,7 @@ package cn.edu.hfut.dmic.webcollector.mycrawler;
 import cn.edu.hfut.dmic.webcollector.conf.ConfConstant;
 import cn.edu.hfut.dmic.webcollector.conf.ConfLoader;
 import cn.edu.hfut.dmic.webcollector.crawler.DeepCrawler;
-import cn.edu.hfut.dmic.webcollector.extractor.Article;
-import cn.edu.hfut.dmic.webcollector.extractor.DefaultTemplateExtractor;
-import cn.edu.hfut.dmic.webcollector.extractor.Extractor;
-import cn.edu.hfut.dmic.webcollector.extractor.SinaKnowledgeExtractor;
+import cn.edu.hfut.dmic.webcollector.extractor.*;
 import cn.edu.hfut.dmic.webcollector.model.Links;
 import cn.edu.hfut.dmic.webcollector.model.Page;
 import cn.edu.hfut.dmic.webcollector.util.JDBCHelper;
@@ -105,7 +102,8 @@ public class SinaKnowledgeCrawler extends DefaultCrawler {
 
         //初始化抽取器
         for(String themeReg : ConfLoader.templatesMap.keySet()){
-            extractors.put(themeReg,new SinaKnowledgeExtractor(ConfLoader.templatesMap.get(themeReg)));
+            extractors.put(themeReg,
+                    new SinaKnowledgeExtractor(ConfLoader.templatesMap.get(themeReg),new SinaNewsValidator()));
         }
     }
 

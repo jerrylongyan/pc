@@ -68,7 +68,7 @@ public class HttpRequesterImpl implements HttpRequester {
             con.setInstanceFollowRedirects(false);
             con.setDoInput(true);
             con.setDoOutput(true);
-            con.setConnectTimeout(3000);
+            con.setConnectTimeout(5000);
             con.setReadTimeout(10000);
 
             configConnection(con);

@@ -1,6 +1,7 @@
 package cn.edu.hfut.dmic.webcollector.extractor;
 
 import cn.edu.hfut.dmic.webcollector.model.Page;
+import org.apache.commons.lang.StringUtils;
 
 import java.util.HashMap;
 import java.util.regex.Matcher;
@@ -18,19 +19,30 @@ public class DefaultTemplateExtractor implements Extractor {
     protected static final String MainContentStr = "mainContent";
     protected static final String Seperator = "%%%";
     protected String filteredHtml = null;
+    protected Validator validator;
 
     //html无用标签的过滤
     private final static String [][] filters = {
             {"(?is)<!DOCTYPE.*?>", ""},
             {"(?is)<script.*?>.*?</script>", ""},
             {"(?is)<style.*?>.*?</style>", ""},
-            {"(?is)<!--.*?-->", ""},
+            //{"(?is)<!--.*?-->", ""}, //不去掉，可通过它进行正文抽取
             {"&.{2,5};|&#.{2,5};", ""},
             {"&nbsp;", " "}
     };
 
     public DefaultTemplateExtractor(HashMap<String, String> templateReg){
         this.templateReg = templateReg;
+        this.validator = new DefaultValidator();
+    }
+
+    public DefaultTemplateExtractor(HashMap<String, String> templateReg, Validator validator){
+        this.templateReg = templateReg;
+        this.validator = validator;
+    }
+
+    public void setValidator(Validator validator){
+        this.validator = validator;
     }
 
     @Override
@@ -54,7 +66,8 @@ public class DefaultTemplateExtractor implements Extractor {
         //时间抽取
         article.setPublishDate(extractField(PublishDateStr,html,false));
         //正文
-        article.setMainContext(extractField(MainContentStr,html,true));
+        String content = extractField(MainContentStr,html,true);
+        article.setMainContext(validator.validateHtml(content));
         //标题
         article.setTitle(extractField(TitleStr,html,false));
 
@@ -78,9 +91,12 @@ public class DefaultTemplateExtractor implements Extractor {
         if(m.find()){
             String fieldHtml = m.group(fieldGroup);
             if(isNeedHtml) {
-                field = fieldHtml.replaceAll("\\s*\n\\s*", "\n").replaceAll("\\s*\r\\s*", "\n").trim();
+                field = fieldHtml.replaceAll("\\s*\n\\s*", "\n").replaceAll("\\s*\r\\s*", "\n")
+                        .trim();//.replaceAll("(?is)<!--.*?-->","")
             }else{
-                field = fieldHtml.replaceAll("<.*?>", "").replaceAll("\\s*\n\\s*", " ").replaceAll("\\s*\r\\s*", " ").trim();
+                field = fieldHtml.replaceAll("<.*?>", "").
+                        replaceAll("\\s*\n\\s*", " ").replaceAll("\\s*\r\\s*", " ")
+                        .replaceAll("(?is)<!--.*?-->", "").trim();
             }
         }
         return field;

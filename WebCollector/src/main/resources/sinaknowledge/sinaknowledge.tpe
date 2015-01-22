@@ -1,4 +1,4 @@
 title=(?is)<h1 id="artibodyTitle".*?>.*?</h1>
 publishDate=(?is)<span id="pub_date">.*?</span>
 author=(?is)<span id="media_name"><(span|a) class="ent1 fred".*?>.*?</span>
-mainContent=(?is)<div class="blkContainerSblkCon BSHARE_POP" id="artibody">.*?</p>.*?</div>
+mainContent=(?is)<!--显示正文 BEGIN-->.*?<p>.*?</p>.*?<!--显示正文 END-->
